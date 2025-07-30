@@ -56,7 +56,11 @@ def gen_mapped_column(
         if index:
             column += f"\n{tab(2)}index=True,"
 
-        # add )
+        column += f"\n{tab()})"
+    else:
+        column += f"{c_type}" + f"({length}), " if length else ", "
+        column += "nullable=False)"
+
     return column
 
 
@@ -109,18 +113,20 @@ def create(model: str):
         if col_type == "String":
             length = typer.prompt("Insert String length")
 
-        unique = typer.prompt("Is unique field?", prompt_suffix=" ")
-        index = typer.prompt("Is an index field?", prompt_suffix=" ")
+        unique = typer.confirm("Is unique field?", default=True)
+        index = typer.confirm("Is an index field?", default=True)
 
         columns[col_name] = (col_type, length, unique, index)
 
+    custom_columns = ""
     for name, c_type in columns.items():
         if c_type not in imports:
-            imports.append(c_type)
+            imports.append(c_type[0])
 
-        gen_mapped_column(name, *c_type)
+        custom_columns += gen_mapped_column(name, *c_type)
 
     template = template.replace("{CUSTOM_IMPORTS}", custom_imports(imports))
+    template = template.replace("{CUSTOM_COLUMNS}", custom_columns)
 
     console.print()
     console.print("-" * 80)
