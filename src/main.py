@@ -1,14 +1,9 @@
-import typer
+from rich import print
 from typer import Typer
 
+from commands import new
+
 app = Typer()
+print("Welcome to [#F75E5B]OCTO[/]:octopus:!")
 
-
-@app.callback()
-def callback():
-    pass
-
-
-@app.command()
-def shoot():
-    typer.echo("Shooting portal gun")
+app.add_typer(new.app, name="new")

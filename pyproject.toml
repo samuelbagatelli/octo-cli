@@ -1,6 +1,6 @@
 [project]
 name = "octo-cli"
-version = "0.1.0"
+version = "0.1.2"
 description = ""
 authors = [
     { name = "Samuel Bagatelli", email = "contato.samuelbagatelli@gmail.com" },
@@ -10,7 +10,7 @@ requires-python = ">=3.10"
 dependencies = ["typer (>=0.16.0,<0.17.0)"]
 
 [tool.poetry]
-packages = [{ include = "src", from = "." }]
+packages = [{ include = "src" }, { include = "commands", from = "src"}]
 
 [tool.poetry.scripts]
 octo = "src.main:app"

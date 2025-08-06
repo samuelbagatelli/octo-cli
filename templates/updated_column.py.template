@@ -1,0 +1,7 @@
+updated_at: Mapped[datetime] = mapped_column(
+    DateTime(timezone=True),
+    server_default=TextClause(
+        SettingsEngine().get_updated_at(),  # pyright: ignore
+    ),
+    nullable=False,
+)
