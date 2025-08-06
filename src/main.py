@@ -1,12 +1,14 @@
-from rich import print
+import typer
 from typer import Typer
 
-from commands import model
-
 app = Typer()
-app.add_typer(model.app, name="model")
 
 
-if __name__ == "__main__":
-    print("Welcome to [#F75E5B]OCTO[/]:octopus:!")
-    app()
+@app.callback()
+def callback():
+    pass
+
+
+@app.command()
+def shoot():
+    typer.echo("Shooting portal gun")
