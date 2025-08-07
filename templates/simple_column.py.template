@@ -1,1 +1,0 @@
-${COLUMN_NAME}: Mapped[${COLUMN_PYTHON_TYPE}] = mapped_column(${COLUMN_TYPE}, nullable=False)

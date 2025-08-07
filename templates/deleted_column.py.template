@@ -1,5 +1,0 @@
-deleted: Mapped[bool] = mapped_column(
-    Boolean,
-    server_default=TextClause("FALSE"),
-    nullable=False,
-)

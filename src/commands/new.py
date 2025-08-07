@@ -1,7 +1,9 @@
-from string import Template
-
+from jinja2 import Environment, PackageLoader, select_autoescape
 from rich.console import Console
 from typer import Typer
+
+from controllers.model import ModelController
+from schemas.model import Model
 
 app = Typer()
 console = Console()
@@ -9,21 +11,30 @@ console = Console()
 
 @app.command()
 def model(name: str):
+    controller = ModelController
+
     console.print(f"\nCreating new model: {name}")
 
-    with open("templates/model.py.template", "r") as file:
-        src = Template(file.read())
+    config = Model(
+        model_name=name,
+        classname=name.title().replace("_", ""),
+        is_duplicate=controller.is_duplicate(),
+    )
 
-    with open("templates/engine_import.py.template", "r") as file:
-        engine_import = file.read()
+    env = Environment(
+        loader=PackageLoader("templates", ""),
+        autoescape=select_autoescape(),
+    )
 
-    variables = {
-        "CLASS_NAME": name.title(),
-        "MODEL_NAME": name,
-        "CUSTOM_IMPORTS": ", Boolean",
-        "ENGINE_IMPORT": engine_import,
-    }
+    template = env.get_template("model.py.j2")
 
-    result = src.safe_substitute(variables)
+    if config.is_duplicate:
+        result = template.render(config.model_dump())
+
+        console.print(result, markup=False)
+        return
+
+    config.columns = controller.get_columns()
+    result = template.render(config.model_dump())
 
     console.print(result, markup=False)
