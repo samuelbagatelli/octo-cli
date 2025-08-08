@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from schemas.column import Column
+from octo_cli.schemas.column import Column
 
 
 class Model(BaseModel):

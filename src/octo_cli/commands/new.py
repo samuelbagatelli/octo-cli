@@ -1,9 +1,11 @@
+import os
+
 from jinja2 import Environment, PackageLoader, select_autoescape
 from rich.console import Console
 from typer import Typer
 
-from controllers.model import ModelController
-from schemas.model import Model
+from octo_cli.controllers.model import ModelController
+from octo_cli.schemas.model import Model
 
 app = Typer()
 console = Console()
@@ -22,7 +24,7 @@ def model(name: str):
     )
 
     env = Environment(
-        loader=PackageLoader("templates", ""),
+        loader=PackageLoader("octo_cli"),
         autoescape=select_autoescape(),
     )
 
@@ -38,3 +40,12 @@ def model(name: str):
     result = template.render(config.model_dump())
 
     console.print(result, markup=False)
+
+    try:
+        os.mkdir("models")
+        console.print("New directory '/models' created.")
+    except FileExistsError:
+        pass
+
+    with open(f"models/{name}.py", "w") as file:
+        file.write(result)

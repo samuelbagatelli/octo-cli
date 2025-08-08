@@ -1,7 +1,7 @@
 from rich import print
 from typer import Typer
 
-from commands import new
+from octo_cli.commands import new
 
 app = Typer()
 print("Welcome to [#F75E5B]OCTO[/]:octopus:!")

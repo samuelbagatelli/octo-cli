@@ -2,7 +2,7 @@ import typer
 from rich.console import Console
 from rich.prompt import Prompt
 
-from schemas.column import Column
+from octo_cli.schemas.column import Column
 
 console = Console()
 
